@@ -1,23 +1,42 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <title>Nounou Zen - Accueil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f2f2f2; }
+    header { background: #4CAF50; padding: 20px; color: white; text-align: center; }
+    .container { padding: 20px; }
+    .btn { background: #4CAF50; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; }
+    .profiles { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .profile { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .online { color: green; font-size: 12px; }
+    .badge { background: #2196F3; color: white; padding: 2px 6px; font-size: 11px; border-radius: 4px; margin-left: 5px; }
+    .fav { float: right; color: red; font-weight: bold; }
+  </style>
 </head>
 <body>
-  <header><h1>Nounou Zen</h1></header>
-  <nav>
-    <a href="index.html">Accueil</a>
-    <a href="recherche.html">Recherche</a>
-    <a href="favoris.html">Mes Favoris</a>
-    <a href="profil.html">Profil Nounou</a>
-  </nav>
-  <main>
-    <h2>Bienvenue dans l'espace parent 👨‍👩‍👧</h2>
-    <p>Utilisez le menu pour naviguer dans l'application.</p>
-  </main>
+  <header>
+    <h1>Nounou Zen</h1>
+    <p>La sérénité pour trouver votre assistante maternelle</p>
+  </header>
+  <div class="container">
+    <a href="#" class="btn">Connexion parent (test)</a>
+    <div class="profiles">
+      <div class="profile">
+        <strong>Julie Martin</strong> <span class="badge">Pajemploi+</span> <span class="online">● En ligne</span> <span class="fav">♡</span>
+        <p>Lyon - 2 places - Dispo Lun-Ven 8h-18h - Pas d'animaux</p>
+      </div>
+      <div class="profile">
+        <strong>Sophie Leroy</strong> <span class="badge">Pajemploi</span>
+        <p>Villeurbanne - 1 place - Dispo Mar-Jeu 9h-17h - Animaux : Oui</p>
+      </div>
+      <div class="profile">
+        <strong>Camille Dupuis</strong> <span class="online">● En ligne</span>
+        <p>Bron - Complète - Réouverture : 2 juin - Pas d'animaux</p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
