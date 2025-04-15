@@ -1,0 +1,7 @@
+
+body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+header, nav, main { padding: 20px; }
+header { background: #4CAF50; color: white; }
+nav { background: #e0e0e0; display: flex; gap: 10px; }
+nav a { text-decoration: none; padding: 10px; background: white; border-radius: 4px; }
+main .profile { background: white; padding: 15px; margin-top: 10px; border-radius: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
