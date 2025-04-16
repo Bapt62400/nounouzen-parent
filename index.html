@@ -1,12 +1,46 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Nounou Zen - App React</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Nounou Zen - Application</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f5f5f5; margin: 0; padding: 0; }
+    header { background-color: #4CAF50; padding: 15px; text-align: center; color: white; }
+    nav { background-color: #ddd; display: flex; justify-content: space-around; padding: 10px 0; }
+    nav a { text-decoration: none; color: #333; font-weight: bold; }
+    .content { padding: 20px; }
+    .profile-card { background: white; margin-bottom: 15px; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .badge { background-color: #4CAF50; color: white; padding: 2px 6px; font-size: 12px; border-radius: 4px; margin-left: 6px; }
+    .online { color: green; font-weight: bold; }
+    .favori { float: right; color: red; }
+  </style>
 </head>
 <body>
-  <div id="root">Chargement de l'application...</div>
-  <script src="main.js"></script>
+  <header>
+    <h1>Nounou Zen</h1>
+    <p>La plateforme de confiance pour les parents et les assistantes maternelles</p>
+  </header>
+  <nav>
+    <a href="#">Accueil</a>
+    <a href="#">Liste</a>
+    <a href="#">Favoris</a>
+    <a href="#">Mon Compte</a>
+  </nav>
+  <div class="content">
+    <h2>Profils de Nounous</h2>
+    <div class="profile-card">
+      <strong>Julie Martin</strong><span class="badge">Pajemploi+</span><span class="online">● En ligne</span><span class="favori">♡</span>
+      <p>Lyon – 2 places – Lun-Ven 8h-18h – Pas d'animaux</p>
+    </div>
+    <div class="profile-card">
+      <strong>Sophie Leroy</strong><span class="badge">Pajemploi</span>
+      <p>Villeurbanne – 1 place – Mar-Jeu 9h-17h – Avec animaux</p>
+    </div>
+    <div class="profile-card">
+      <strong>Camille Dupuis</strong>
+      <p>Bron – Complète – Réouverture le 2 juin – Pas d'animaux</p>
+    </div>
+  </div>
 </body>
 </html>
