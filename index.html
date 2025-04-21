@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Nounou Zen - Accueil</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Nounou Zen - Recherche & Messagerie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
-    body { font-family: 'Arial', sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; }
-    header { background-color: #ffffff; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); text-align: center; }
-    header h1 { color: #444; }
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f7f7f7; }
+    header { background: #fff; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; }
+    h1 { margin: 0; color: #444; }
     .container { padding: 20px; }
-    .profile-card { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px; overflow: hidden; }
-    .profile-image { width: 100%; height: auto; display: block; }
-    .profile-content { padding: 15px; }
-    .profile-content h2 { margin: 0; font-size: 20px; color: #333; }
-    .badge { background-color: #6c63ff; color: white; padding: 3px 8px; font-size: 12px; border-radius: 12px; margin-left: 8px; }
-    .status { color: green; font-weight: bold; font-size: 12px; }
-    .action { margin-top: 10px; }
-    .btn { background-color: #00c48c; color: white; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    .search-bar { margin-bottom: 20px; }
+    input[type="text"] { padding: 10px; width: 100%; border-radius: 6px; border: 1px solid #ccc; }
+    .profile { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .profile h2 { margin: 0 0 5px 0; }
+    .btn { margin-top: 10px; display: inline-block; background: #00c48c; color: white; padding: 8px 16px; border: none; border-radius: 6px; text-decoration: none; cursor: pointer; }
+    .chat { margin-top: 30px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .message { margin: 10px 0; }
+    .from-parent { text-align: right; }
+    .from-nounou { text-align: left; }
+    .status { font-size: 11px; color: gray; }
   </style>
 </head>
 <body>
@@ -24,24 +26,49 @@
     <h1>Nounou Zen</h1>
   </header>
   <div class="container">
-    <div class="profile-card">
-      <img class="profile-image" src="julie.jpg" alt="Julie Martin">
-      <div class="profile-content">
-        <h2>Julie Martin <span class="badge">Pajemploi+</span></h2>
-        <p class="status">● En ligne</p>
-        <p>Lyon – 2 places – Dispo Lun-Ven 8h-18h – Pas d'animaux</p>
-        <div class="action"><button class="btn">Contacter</button></div>
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Rechercher une ville..." onkeyup="filterProfiles()">
+    </div>
+
+    <div id="profiles">
+      <div class="profile" data-ville="Lyon">
+        <h2>Julie Martin (Lyon)</h2>
+        <p>2 places – Pajemploi+ – Pas d'animaux</p>
+        <button class="btn" onclick="showChat('Julie Martin')">Contacter</button>
+      </div>
+      <div class="profile" data-ville="Villeurbanne">
+        <h2>Sophie Leroy (Villeurbanne)</h2>
+        <p>1 place – Pajemploi – Avec animaux</p>
+        <button class="btn" onclick="showChat('Sophie Leroy')">Contacter</button>
       </div>
     </div>
-    <div class="profile-card">
-      <img class="profile-image" src="sophie.jpg" alt="Sophie Leroy">
-      <div class="profile-content">
-        <h2>Sophie Leroy <span class="badge">Pajemploi</span></h2>
-        <p class="status">● En ligne</p>
-        <p>Villeurbanne – 1 place – Mar-Jeu 9h-17h – Avec animaux</p>
-        <div class="action"><button class="btn">Contacter</button></div>
+
+    <div class="chat" id="chatBox" style="display:none;">
+      <h3>Messagerie avec <span id="chatWith"></span></h3>
+      <div class="message from-parent">
+        Bonjour, êtes-vous disponible ?<br><span class="status">✓ envoyé</span>
+      </div>
+      <div class="message from-nounou">
+        Bonjour, oui j’ai une place !<br><span class="status">lu</span>
       </div>
     </div>
   </div>
+
+  <script>
+    function filterProfiles() {
+      var input = document.getElementById("search").value.toLowerCase();
+      var profiles = document.querySelectorAll("#profiles .profile");
+      profiles.forEach(function(profile) {
+        var ville = profile.getAttribute("data-ville").toLowerCase();
+        profile.style.display = ville.includes(input) ? "block" : "none";
+      });
+    }
+
+    function showChat(nom) {
+      document.getElementById("chatWith").innerText = nom;
+      document.getElementById("chatBox").style.display = "block";
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  </script>
 </body>
 </html>
