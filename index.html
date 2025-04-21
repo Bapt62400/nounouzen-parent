@@ -1,74 +1,72 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <title>Nounou Zen - Recherche & Messagerie</title>
+  <title>Nounou Zen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f7f7f7; }
-    header { background: #fff; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; }
-    h1 { margin: 0; color: #444; }
-    .container { padding: 20px; }
-    .search-bar { margin-bottom: 20px; }
-    input[type="text"] { padding: 10px; width: 100%; border-radius: 6px; border: 1px solid #ccc; }
-    .profile { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    .profile h2 { margin: 0 0 5px 0; }
-    .btn { margin-top: 10px; display: inline-block; background: #00c48c; color: white; padding: 8px 16px; border: none; border-radius: 6px; text-decoration: none; cursor: pointer; }
-    .chat { margin-top: 30px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    .message { margin: 10px 0; }
-    .from-parent { text-align: right; }
-    .from-nounou { text-align: left; }
-    .status { font-size: 11px; color: gray; }
+    body { margin: 0; font-family: Arial, sans-serif; background: #f7f7f7; }
+    header { background: #fff; padding: 15px; text-align: center; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .page { display: none; padding: 20px; }
+    .active { display: block; }
+    .bottom-nav {
+      position: fixed; bottom: 0; width: 100%;
+      background: #ffffff; border-top: 1px solid #ccc;
+      display: flex; justify-content: space-around; padding: 10px 0;
+    }
+    .nav-item { text-align: center; font-size: 14px; color: #666; cursor: pointer; }
+    .nav-item.active { color: #00c48c; font-weight: bold; }
+    .nav-item span { display: block; font-size: 20px; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Nounou Zen</h1>
-  </header>
-  <div class="container">
-    <div class="search-bar">
-      <input type="text" id="search" placeholder="Rechercher une ville..." onkeyup="filterProfiles()">
-    </div>
 
-    <div id="profiles">
-      <div class="profile" data-ville="Lyon">
-        <h2>Julie Martin (Lyon)</h2>
-        <p>2 places – Pajemploi+ – Pas d'animaux</p>
-        <button class="btn" onclick="showChat('Julie Martin')">Contacter</button>
-      </div>
-      <div class="profile" data-ville="Villeurbanne">
-        <h2>Sophie Leroy (Villeurbanne)</h2>
-        <p>1 place – Pajemploi – Avec animaux</p>
-        <button class="btn" onclick="showChat('Sophie Leroy')">Contacter</button>
-      </div>
-    </div>
+<header>Nounou Zen</header>
 
-    <div class="chat" id="chatBox" style="display:none;">
-      <h3>Messagerie avec <span id="chatWith"></span></h3>
-      <div class="message from-parent">
-        Bonjour, êtes-vous disponible ?<br><span class="status">✓ envoyé</span>
-      </div>
-      <div class="message from-nounou">
-        Bonjour, oui j’ai une place !<br><span class="status">lu</span>
-      </div>
-    </div>
+<div id="recherche" class="page active">
+  <h2>Recherche</h2>
+  <p>Ici, vous pouvez rechercher des assistantes maternelles.</p>
+</div>
+
+<div id="favoris" class="page">
+  <h2>Favoris</h2>
+  <p>Vos nounous sauvegardées apparaîtront ici.</p>
+</div>
+
+<div id="messagerie" class="page">
+  <h2>Messagerie</h2>
+  <p>Discutez avec vos nounous préférées.</p>
+</div>
+
+<div id="profil" class="page">
+  <h2>Mon Profil</h2>
+  <p>Vos informations personnelles et préférences.</p>
+</div>
+
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="switchTab('recherche', this)">
+    <span>🔍</span>Recherche
   </div>
+  <div class="nav-item" onclick="switchTab('favoris', this)">
+    <span>❤️</span>Favoris
+  </div>
+  <div class="nav-item" onclick="switchTab('messagerie', this)">
+    <span>💬</span>Contact
+  </div>
+  <div class="nav-item" onclick="switchTab('profil', this)">
+    <span>👤</span>Profil
+  </div>
+</div>
 
-  <script>
-    function filterProfiles() {
-      var input = document.getElementById("search").value.toLowerCase();
-      var profiles = document.querySelectorAll("#profiles .profile");
-      profiles.forEach(function(profile) {
-        var ville = profile.getAttribute("data-ville").toLowerCase();
-        profile.style.display = ville.includes(input) ? "block" : "none";
-      });
-    }
+<script>
+  function switchTab(id, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    el.classList.add('active');
+  }
+</script>
 
-    function showChat(nom) {
-      document.getElementById("chatWith").innerText = nom;
-      document.getElementById("chatBox").style.display = "block";
-      window.scrollTo(0, document.body.scrollHeight);
-    }
-  </script>
 </body>
 </html>
