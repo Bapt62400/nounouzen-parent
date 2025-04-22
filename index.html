@@ -26,6 +26,9 @@
     .btn { background-color: #00c48c; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
     .heart { position: absolute; right: 15px; top: 15px; color: #ccc; cursor: pointer; }
     .heart.favori { color: red; }
+    .chat-box { border-top: 1px solid #ccc; margin-top: 20px; padding-top: 10px; }
+    .chat-message { margin-bottom: 10px; }
+    .status { font-size: 11px; color: gray; }
   </style>
 </head>
 <body>
@@ -35,9 +38,7 @@
 <div id="recherche" class="page active">
   <h2>Recherche</h2>
   <input type="text" id="search" placeholder="Rechercher une ville..." onkeyup="filterProfiles()" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
-  <div id="results">
-    <!-- Profils générés par JS -->
-  </div>
+  <div id="results"></div>
 </div>
 
 <div id="favoris" class="page">
@@ -47,7 +48,14 @@
 
 <div id="messagerie" class="page">
   <h2>Messagerie</h2>
-  <div id="contactContent">Cliquez sur “Contacter” pour démarrer une conversation avec une nounou.</div>
+  <div id="contactContent">
+    <p id="currentContact">Aucune discussion en cours.</p>
+    <div id="chatMessages" class="chat-box"></div>
+    <div style="margin-top: 15px;">
+      <input type="text" id="messageInput" placeholder="Votre message..." style="width: 80%; padding: 8px;">
+      <button onclick="envoyerMessage()" class="btn">Envoyer</button>
+    </div>
+  </div>
 </div>
 
 <div id="profil" class="page">
@@ -78,6 +86,7 @@
   ];
   let favoris = [];
   let contactActuel = "";
+  let messages = [];
 
   function switchTab(id, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -85,7 +94,7 @@
     document.getElementById(id).classList.add('active');
     el.classList.add('active');
     if (id === 'favoris') afficherFavoris();
-    if (id === 'messagerie') afficherContact();
+    if (id === 'messagerie') afficherMessages();
   }
 
   function filterProfiles() {
@@ -136,15 +145,33 @@
 
   function contacter(nom) {
     contactActuel = nom;
+    messages = [];
     switchTab('messagerie', document.querySelector(".nav-item:nth-child(3)"));
   }
 
-  function afficherContact() {
-    const zone = document.getElementById("contactContent");
+  function envoyerMessage() {
+    const input = document.getElementById("messageInput");
+    const texte = input.value.trim();
+    if (texte) {
+      messages.push({ text: texte, status: "✓ distribué" });
+      input.value = "";
+      afficherMessages();
+    }
+  }
+
+  function afficherMessages() {
+    const title = document.getElementById("currentContact");
+    const zone = document.getElementById("chatMessages");
     if (contactActuel) {
-      zone.innerHTML = `<p>Conversation avec <strong>${contactActuel}</strong></p>
-                        <div class='message from-parent'>Bonjour, êtes-vous disponible ?<br><span class='status'>✓ envoyé</span></div>
-                        <div class='message from-nounou'>Bonjour, oui j’ai une place !<br><span class='status'>lu</span></div>`;
+      title.innerHTML = `Conversation avec <strong>${contactActuel}</strong>`;
+      zone.innerHTML = messages.map(m => `<div class='chat-message'>${m.text}<br><span class='status'>${m.status}</span></div>`).join("");
+      setTimeout(() => {
+        messages = messages.map(m => ({ ...m, status: "lu" }));
+        afficherMessages();
+      }, 3000);
+    } else {
+      title.innerText = "Aucune discussion en cours.";
+      zone.innerHTML = "";
     }
   }
 
