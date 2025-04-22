@@ -40,6 +40,15 @@
       position: absolute; right: 15px; top: 15px; color: #ccc; cursor: pointer;
     }
     .heart.favori { color: red; }
+    .chat-box { margin-top: 10px; max-height: 200px; overflow-y: auto; }
+    .chat-message {
+      background: #e1f5ec; margin-bottom: 10px;
+      padding: 10px 14px; border-radius: 10px;
+      position: relative; width: fit-content; max-width: 70%;
+    }
+    .status {
+      font-size: 11px; color: #555; margin-top: 3px;
+    }
   </style>
 </head>
 <body>
@@ -63,6 +72,11 @@
 <div id="messagerie" class="page">
   <h2>Messagerie</h2>
   <p id="chatWith">Aucune conversation en cours.</p>
+  <div id="chatBox" class="chat-box"></div>
+  <div>
+    <input type="text" id="messageInput" placeholder="Votre message..." style="width:80%;padding:8px;margin-top:10px;">
+    <button onclick="envoyerMessage()" class="btn">Envoyer</button>
+  </div>
 </div>
 
 <div id="profil" class="page">
@@ -93,6 +107,7 @@
   ];
   let favoris = [];
   let currentContact = "";
+  let messages = [];
 
   function switchTab(id, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -102,6 +117,7 @@
     if (id === "favoris") afficherFavoris();
     if (id === "messagerie" && currentContact) {
       document.getElementById("chatWith").innerText = "Conversation avec " + currentContact;
+      afficherMessages();
     }
   }
 
@@ -149,7 +165,27 @@
 
   function contacter(nom) {
     currentContact = nom;
+    messages = [];
     switchTab("messagerie", document.querySelector(".nav-item:nth-child(3)"));
+  }
+
+  function envoyerMessage() {
+    const input = document.getElementById("messageInput");
+    const text = input.value.trim();
+    if (text) {
+      messages.push({ text: text, status: "✓ distribué" });
+      input.value = "";
+      afficherMessages();
+      setTimeout(() => {
+        messages = messages.map(m => ({ ...m, status: "lu" }));
+        afficherMessages();
+      }, 3000);
+    }
+  }
+
+  function afficherMessages() {
+    const box = document.getElementById("chatBox");
+    box.innerHTML = messages.map(m => `<div class='chat-message'>${m.text}<div class='status'>${m.status}</div></div>`).join("");
   }
 
   document.getElementById("searchInput").addEventListener("input", function() {
