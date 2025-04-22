@@ -7,33 +7,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background: #f7f7f7; }
-    header { background: #fff; padding: 15px; text-align: center; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #333; }
+    header { background: #ffffff; padding: 20px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    header h1 { margin: 0; font-size: 24px; color: #3a3a3a; }
+    header p { margin: 4px 0 0; font-size: 13px; color: #888; }
     .page { display: none; padding: 20px; }
     .active { display: block; }
     .bottom-nav {
-      position: fixed; bottom: 0; width: 100%;
-      background: #ffffff; border-top: 1px solid #ccc;
-      display: flex; justify-content: space-around; padding: 10px 0;
+      position: fixed; bottom: 0; width: 100%; background: #ffffff;
+      border-top: 1px solid #ccc; display: flex; justify-content: space-around; padding: 10px 0;
     }
     .nav-item { text-align: center; font-size: 12px; color: #666; cursor: pointer; }
     .nav-item.active { color: #00c48c; font-weight: bold; }
     .nav-item i { display: block; font-size: 18px; margin-bottom: 4px; }
-    .profile-card { background: white; margin-top: 10px; padding: 15px; border-radius: 8px; box-shadow: 0 1px 5px rgba(0,0,0,0.1); position: relative; }
-    .profile-card h3 { margin: 0 0 5px; font-size: 16px; }
+    .profile-card {
+      background: white; margin-top: 10px; padding: 15px;
+      border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .profile-card h3 { margin: 0 0 5px; font-size: 16px; display: flex; align-items: center; }
     .profile-card p { margin: 0 0 10px; font-size: 14px; color: #555; }
-    .badge { background-color: #6c63ff; color: white; padding: 2px 8px; font-size: 12px; border-radius: 8px; margin-left: 6px; }
-    .btn { background-color: #00c48c; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; }
+    .badge {
+      background-color: #6c63ff; color: white; padding: 2px 8px;
+      font-size: 12px; border-radius: 8px; margin-left: 8px;
+    }
+    .btn {
+      background-color: #00c48c; color: white; border: none;
+      padding: 8px 16px; border-radius: 6px; cursor: pointer;
+    }
     .heart { position: absolute; right: 15px; top: 15px; color: #ccc; cursor: pointer; }
     .heart.favori { color: red; }
-    .chat-box { border-top: 1px solid #ccc; margin-top: 20px; padding-top: 10px; }
-    .chat-message { margin-bottom: 10px; }
-    .status { font-size: 11px; color: gray; }
+    .chat-box { border-top: 1px solid #ddd; margin-top: 20px; padding-top: 10px; }
+    .chat-message {
+      background: #e8f9f1; padding: 10px 14px; border-radius: 16px;
+      margin: 10px 0; max-width: 70%; position: relative;
+    }
+    .chat-message .status {
+      font-size: 11px; color: gray; position: absolute; right: 10px; bottom: -16px;
+    }
   </style>
 </head>
 <body>
 
-<header>Nounou Zen</header>
+<header>
+  <h1>Nounou Zen</h1>
+  <p>Trouver la sérénité, une nounou à la fois</p>
+</header>
 
 <div id="recherche" class="page active">
   <h2>Recherche</h2>
@@ -52,7 +71,7 @@
     <p id="currentContact">Aucune discussion en cours.</p>
     <div id="chatMessages" class="chat-box"></div>
     <div style="margin-top: 15px;">
-      <input type="text" id="messageInput" placeholder="Votre message..." style="width: 80%; padding: 8px;">
+      <input type="text" id="messageInput" placeholder="Votre message..." style="width: 80%; padding: 8px;" onkeydown="handleKey(event)">
       <button onclick="envoyerMessage()" class="btn">Envoyer</button>
     </div>
   </div>
@@ -80,9 +99,9 @@
 
 <script>
   const nounous = [
-    { nom: "Julie Martin", ville: "Lyon", infos: "2 places – Pajemploi+ – Pas d'animaux", badge: true },
-    { nom: "Sophie Leroy", ville: "Villeurbanne", infos: "1 place – Pajemploi – Avec animaux", badge: true },
-    { nom: "Camille Dupuis", ville: "Bron", infos: "Complète – Pajemploi+ – Pas d'animaux", badge: true }
+    { nom: "Julie Martin", ville: "Lyon", infos: "2 places – Pas d'animaux", badge: "Pajemploi+" },
+    { nom: "Sophie Leroy", ville: "Villeurbanne", infos: "1 place – Avec animaux", badge: "Pajemploi" },
+    { nom: "Camille Dupuis", ville: "Bron", infos: "Complète – Pas d'animaux", badge: "Pajemploi+" }
   ];
   let favoris = [];
   let contactActuel = "";
@@ -110,7 +129,7 @@
     const card = document.createElement("div");
     card.className = "profile-card";
     const coeurClass = favoris.includes(index) ? "heart favori" : "heart";
-    card.innerHTML = `<h3>${n.nom}<span class="badge">Pajemploi</span></h3>
+    card.innerHTML = `<h3>${n.nom}<span class="badge">${n.badge}</span></h3>
                       <p>${n.ville} – ${n.infos}</p>
                       <button class="btn" onclick="contacter('${n.nom}')">Contacter</button>
                       <i class="fas fa-heart ${coeurClass}" onclick="toggleFavori(${index}, this)"></i>`;
@@ -159,12 +178,19 @@
     }
   }
 
+  function handleKey(e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      envoyerMessage();
+    }
+  }
+
   function afficherMessages() {
     const title = document.getElementById("currentContact");
     const zone = document.getElementById("chatMessages");
     if (contactActuel) {
       title.innerHTML = `Conversation avec <strong>${contactActuel}</strong>`;
-      zone.innerHTML = messages.map(m => `<div class='chat-message'>${m.text}<br><span class='status'>${m.status}</span></div>`).join("");
+      zone.innerHTML = messages.map(m => `<div class='chat-message'>${m.text}<div class='status'>${m.status}</div></div>`).join("");
       setTimeout(() => {
         messages = messages.map(m => ({ ...m, status: "lu" }));
         afficherMessages();
