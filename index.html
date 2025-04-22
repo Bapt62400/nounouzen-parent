@@ -101,9 +101,9 @@
 
 <script>
   const nounous = [
-    { nom: "Julie Martin", ville: "Lyon", infos: "2 places – Pas d'animaux", badge: "Pajemploi+", photo: "/images/julie.jpg" },
-    { nom: "Sophie Leroy", ville: "Villeurbanne", infos: "1 place – Avec animaux", badge: "Pajemploi", photo: "/images/sophie.jpg" },
-    { nom: "Camille Dupuis", ville: "Bron", infos: "Complète – Pas d'animaux", badge: "Pajemploi+", photo: "/images/camille.jpg" }
+    { nom: "Julie Martin", ville: "Lyon", infos: "2 places – Pas d'animaux", badge: "Pajemploi+", photo: "julie.jpg" },
+    { nom: "Sophie Leroy", ville: "Villeurbanne", infos: "1 place – Avec animaux", badge: "Pajemploi", photo: "sophie.jpg" },
+    { nom: "Camille Dupuis", ville: "Bron", infos: "Complète – Pas d'animaux", badge: "Pajemploi+", photo: "camille.jpg" }
   ];
   let favoris = [];
   let currentContact = "";
@@ -132,7 +132,7 @@
     card.className = "profile-card";
     const favClass = favoris.includes(index) ? "heart favori" : "heart";
     card.innerHTML = `
-      <img src="images/${n.photo}" alt="${n.nom}"/>
+      <img src="/images/${n.photo}" alt="${n.nom}"/>
       <div class="profile-details">
         <h3>${n.nom} <span class="badge">${n.badge}</span></h3>
         <p>${n.ville} – ${n.infos}</p>
