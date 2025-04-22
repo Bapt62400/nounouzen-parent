@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <title>Nounou Zen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     body { margin: 0; font-family: Arial, sans-serif; background: #f7f7f7; }
     header { background: #fff; padding: 15px; text-align: center; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
@@ -15,9 +16,12 @@
       background: #ffffff; border-top: 1px solid #ccc;
       display: flex; justify-content: space-around; padding: 10px 0;
     }
-    .nav-item { text-align: center; font-size: 14px; color: #666; cursor: pointer; }
+    .nav-item { text-align: center; font-size: 12px; color: #666; cursor: pointer; }
     .nav-item.active { color: #00c48c; font-weight: bold; }
-    .nav-item span { display: block; font-size: 20px; }
+    .nav-item i { display: block; font-size: 18px; margin-bottom: 4px; }
+    .profile-card { background: white; margin-top: 10px; padding: 15px; border-radius: 8px; box-shadow: 0 1px 5px rgba(0,0,0,0.1); }
+    .profile-card h3 { margin: 0 0 5px; font-size: 16px; }
+    .profile-card p { margin: 0; font-size: 14px; color: #555; }
   </style>
 </head>
 <body>
@@ -26,7 +30,21 @@
 
 <div id="recherche" class="page active">
   <h2>Recherche</h2>
-  <p>Ici, vous pouvez rechercher des assistantes maternelles.</p>
+  <input type="text" id="search" placeholder="Rechercher une ville..." onkeyup="filterProfiles()" style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px;">
+  <div id="results">
+    <div class="profile-card" data-ville="Lyon">
+      <h3>Julie Martin</h3>
+      <p>Lyon – 2 places – Pajemploi+ – Pas d'animaux</p>
+    </div>
+    <div class="profile-card" data-ville="Villeurbanne">
+      <h3>Sophie Leroy</h3>
+      <p>Villeurbanne – 1 place – Pajemploi – Avec animaux</p>
+    </div>
+    <div class="profile-card" data-ville="Bron">
+      <h3>Camille Dupuis</h3>
+      <p>Bron – Complète – Pajemploi+ – Pas d'animaux</p>
+    </div>
+  </div>
 </div>
 
 <div id="favoris" class="page">
@@ -46,16 +64,16 @@
 
 <div class="bottom-nav">
   <div class="nav-item active" onclick="switchTab('recherche', this)">
-    <span>🔍</span>Recherche
+    <i class="fas fa-search"></i>Recherche
   </div>
   <div class="nav-item" onclick="switchTab('favoris', this)">
-    <span>❤️</span>Favoris
+    <i class="fas fa-heart"></i>Favoris
   </div>
   <div class="nav-item" onclick="switchTab('messagerie', this)">
-    <span>💬</span>Contact
+    <i class="fas fa-comment-dots"></i>Contact
   </div>
   <div class="nav-item" onclick="switchTab('profil', this)">
-    <span>👤</span>Profil
+    <i class="fas fa-user"></i>Profil
   </div>
 </div>
 
@@ -65,6 +83,15 @@
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     el.classList.add('active');
+  }
+
+  function filterProfiles() {
+    const input = document.getElementById("search").value.toLowerCase();
+    const cards = document.querySelectorAll("#results .profile-card");
+    cards.forEach(card => {
+      const ville = card.getAttribute("data-ville").toLowerCase();
+      card.style.display = ville.includes(input) ? "block" : "none";
+    });
   }
 </script>
 
