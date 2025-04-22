@@ -46,11 +46,12 @@
 
 <header>
   <h1>Nounou Zen</h1>
-  <p>Trouver la sérénité, une nounou à la fois</p>
+  <p>La garde de votre enfant, notre priorité</p>
 </header>
 
 <div id="recherche" class="page active">
   <h2>Recherche</h2>
+  <input type="text" id="searchInput" placeholder="Rechercher une ville ou un nom..." style="width:100%;padding:8px;margin-bottom:10px;border-radius:6px;border:1px solid #ccc;">
   <div id="results"></div>
 </div>
 
@@ -61,7 +62,7 @@
 
 <div id="messagerie" class="page">
   <h2>Messagerie</h2>
-  <p>Fonctionnalité à venir.</p>
+  <p id="chatWith">Aucune conversation en cours.</p>
 </div>
 
 <div id="profil" class="page">
@@ -91,6 +92,7 @@
     { nom: "Camille Dupuis", ville: "Bron", infos: "Complète – Pas d'animaux", badge: "Pajemploi+", photo: "camille.jpg" }
   ];
   let favoris = [];
+  let currentContact = "";
 
   function switchTab(id, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -98,6 +100,9 @@
     document.getElementById(id).classList.add('active');
     el.classList.add('active');
     if (id === "favoris") afficherFavoris();
+    if (id === "messagerie" && currentContact) {
+      document.getElementById("chatWith").innerText = "Conversation avec " + currentContact;
+    }
   }
 
   function afficherTous() {
@@ -115,7 +120,7 @@
       <div class="profile-details">
         <h3>${n.nom} <span class="badge">${n.badge}</span></h3>
         <p>${n.ville} – ${n.infos}</p>
-        <button class="btn">Contacter</button>
+        <button class="btn" onclick="contacter('${n.nom}')">Contacter</button>
       </div>
       <i class="fas fa-heart ${favClass}" onclick="toggleFavori(this, ${index})"></i>
     `;
@@ -141,6 +146,19 @@
       favoris.forEach(i => container.appendChild(createCard(nounous[i], i)));
     }
   }
+
+  function contacter(nom) {
+    currentContact = nom;
+    switchTab("messagerie", document.querySelector(".nav-item:nth-child(3)"));
+  }
+
+  document.getElementById("searchInput").addEventListener("input", function() {
+    const val = this.value.toLowerCase();
+    const filtered = nounous.filter(n => n.nom.toLowerCase().includes(val) || n.ville.toLowerCase().includes(val));
+    const container = document.getElementById("results");
+    container.innerHTML = "";
+    filtered.forEach((n, i) => container.appendChild(createCard(n, i)));
+  });
 
   afficherTous();
 </script>
