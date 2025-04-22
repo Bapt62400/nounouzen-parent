@@ -5,50 +5,35 @@
   <meta charset="UTF-8" />
   <title>Nounou Zen</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #f4f6f9; color: #333; }
-    header { background: #ffffff; padding: 20px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    header h1 { margin: 0; font-size: 24px; color: #3a3a3a; }
-    header p { margin: 4px 0 0; font-size: 13px; color: #888; }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f9; }
+    header { background: white; padding: 20px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    header h1 { margin: 0; font-size: 24px; }
+    header p { font-size: 14px; color: #666; margin-top: 4px; }
     .page { display: none; padding: 20px; }
     .active { display: block; }
     .bottom-nav {
-      position: fixed; bottom: 0; width: 100%; background: #ffffff;
-      border-top: 1px solid #ccc; display: flex; justify-content: space-around; padding: 10px 0;
+      position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around;
+      background: #fff; border-top: 1px solid #ccc; padding: 10px 0;
     }
-    .nav-item { text-align: center; font-size: 12px; color: #666; cursor: pointer; }
+    .nav-item { font-size: 12px; color: #555; cursor: pointer; text-align: center; }
+    .nav-item i { font-size: 18px; display: block; margin-bottom: 4px; }
     .nav-item.active { color: #00c48c; font-weight: bold; }
-    .nav-item i { display: block; font-size: 18px; margin-bottom: 4px; }
+
     .profile-card {
-      background: white; margin-top: 10px; padding: 15px; border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05); position: relative; display: flex; align-items: center;
+      background: white; margin: 10px 0; padding: 15px; border-radius: 10px;
+      display: flex; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
-    .profile-card img {
-      width: 70px; height: 70px; border-radius: 50%; object-fit: cover; margin-right: 15px;
-    }
-    .profile-details { flex: 1; }
-    .profile-details h3 { margin: 0 0 5px; font-size: 16px; display: flex; align-items: center; }
-    .profile-details p { margin: 0 0 10px; font-size: 14px; color: #555; }
-    .badge {
-      background-color: #6c63ff; color: white; padding: 2px 8px;
-      font-size: 12px; border-radius: 8px; margin-left: 8px;
-    }
-    .btn { background-color: #00c48c; color: white; border: none;
-           padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; }
-    .heart {
-      position: absolute; right: 15px; top: 15px; color: #ccc; cursor: pointer;
-    }
-    .heart.favori { color: red; }
-    .chat-box { margin-top: 10px; max-height: 200px; overflow-y: auto; }
-    .chat-message {
-      background: #e1f5ec; margin-bottom: 10px;
-      padding: 10px 14px; border-radius: 10px;
-      position: relative; width: fit-content; max-width: 70%;
-    }
-    .status {
-      font-size: 11px; color: #555; margin-top: 3px;
-    }
+    .profile-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-right: 15px; }
+    .btn { background: #00c48c; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
+
+    .chat-box { max-height: 200px; overflow-y: auto; margin-top: 10px; }
+    .chat-message { background: #e1f5ec; padding: 10px; border-radius: 10px; margin-bottom: 8px; width: fit-content; }
+    .status { font-size: 11px; color: #555; }
+
+    .form-field { margin: 10px 0; }
+    .form-field input { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; }
+    .profile-preview img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; }
   </style>
 </head>
 <body>
@@ -59,8 +44,7 @@
 </header>
 
 <div id="recherche" class="page active">
-  <h2>Recherche</h2>
-  <input type="text" id="searchInput" placeholder="Rechercher une ville ou un nom..." style="width:100%;padding:8px;margin-bottom:10px;border-radius:6px;border:1px solid #ccc;">
+  <input type="text" id="searchInput" placeholder="Rechercher une ville ou un nom..." style="width:100%;padding:8px;">
   <div id="results"></div>
 </div>
 
@@ -71,140 +55,143 @@
 
 <div id="messagerie" class="page">
   <h2>Messagerie</h2>
-  <p id="chatWith">Aucune conversation en cours.</p>
+  <p id="chatWith">Aucune conversation</p>
   <div id="chatBox" class="chat-box"></div>
-  <div>
-    <input type="text" id="messageInput" placeholder="Votre message..." onkeydown="handleKey(event)" style="width:80%;padding:8px;margin-top:10px;">
-    <button onclick="envoyerMessage()" class="btn">Envoyer</button>
-  </div>
+  <input type="text" id="messageInput" placeholder="Votre message..." onkeydown="handleKey(event)">
+  <button onclick="envoyerMessage()" class="btn">Envoyer</button>
 </div>
 
 <div id="profil" class="page">
   <h2>Mon Profil</h2>
-  <p>Informations personnelles à venir.</p>
+  <div class="form-field"><input type="text" id="prenom" placeholder="Prénom"></div>
+  <div class="form-field"><input type="text" id="nom" placeholder="Nom"></div>
+  <div class="form-field"><input type="email" id="email" placeholder="Email"></div>
+  <div class="form-field"><input type="password" id="password" placeholder="Mot de passe"></div>
+  <div class="form-field"><input type="file" id="avatar" accept="image/*"></div>
+  <button onclick="enregistrerProfil()" class="btn">Enregistrer</button>
+  <div id="previewContainer" class="profile-preview" style="display:none;">
+    <p>Profil :</p>
+    <img id="previewImage" src="#" alt="Avatar">
+    <p id="previewText"></p>
+  </div>
 </div>
 
 <div class="bottom-nav">
-  <div class="nav-item active" onclick="switchTab('recherche', this)">
-    <i class="fas fa-search"></i>Recherche
-  </div>
-  <div class="nav-item" onclick="switchTab('favoris', this)">
-    <i class="fas fa-heart"></i>Favoris
-  </div>
-  <div class="nav-item" onclick="switchTab('messagerie', this)">
-    <i class="fas fa-comment-dots"></i>Contact
-  </div>
-  <div class="nav-item" onclick="switchTab('profil', this)">
-    <i class="fas fa-user"></i>Profil
-  </div>
+  <div class="nav-item active" onclick="switchTab('recherche', this)"><i class="fas fa-search"></i>Recherche</div>
+  <div class="nav-item" onclick="switchTab('favoris', this)"><i class="fas fa-heart"></i>Favoris</div>
+  <div class="nav-item" onclick="switchTab('messagerie', this)"><i class="fas fa-comment-dots"></i>Contact</div>
+  <div class="nav-item" onclick="switchTab('profil', this)"><i class="fas fa-user"></i>Profil</div>
 </div>
 
 <script>
-  const nounous = [
-    { nom: "Julie Martin", ville: "Lyon", infos: "2 places – Pas d'animaux", badge: "Pajemploi+", photo: "julie.jpg" },
-    { nom: "Sophie Leroy", ville: "Villeurbanne", infos: "1 place – Avec animaux", badge: "Pajemploi", photo: "sophie.jpg" },
-    { nom: "Camille Dupuis", ville: "Bron", infos: "Complète – Pas d'animaux", badge: "Pajemploi+", photo: "camille.jpg" }
-  ];
-  let favoris = [];
-  let currentContact = "";
-  let messages = [];
+const nounous = [
+  { nom: "Julie Martin", ville: "Lyon", infos: "2 places – Pas d'animaux", photo: "julie.jpg" },
+  { nom: "Sophie Leroy", ville: "Villeurbanne", infos: "1 place – Avec animaux", photo: "sophie.jpg" },
+  { nom: "Camille Dupuis", ville: "Bron", infos: "Complète – Pas d'animaux", photo: "camille.jpg" }
+];
+let favoris = [];
+let messages = [];
+let currentContact = "";
 
-  function switchTab(id, el) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    el.classList.add('active');
-    if (id === "favoris") afficherFavoris();
-    if (id === "messagerie" && currentContact) {
-      document.getElementById("chatWith").innerText = "Conversation avec " + currentContact;
-      afficherMessages();
-    }
-  }
+function switchTab(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  if (id === "favoris") afficherFavoris();
+  if (id === "messagerie" && currentContact) afficherMessages();
+}
 
-  function afficherTous() {
-    const container = document.getElementById("results");
-    container.innerHTML = "";
-    nounous.forEach((n, i) => container.appendChild(createCard(n, i)));
-  }
-
-  function createCard(n, index) {
+function afficherTous() {
+  const res = document.getElementById("results");
+  res.innerHTML = "";
+  nounous.forEach((n, i) => {
     const card = document.createElement("div");
     card.className = "profile-card";
-    const favClass = favoris.includes(index) ? "heart favori" : "heart";
     card.innerHTML = `
-      <img src="images/${n.photo}" alt="${n.nom}"/>
-      <div class="profile-details">
-        <h3>${n.nom} <span class="badge">${n.badge}</span></h3>
+      <img src="images/${n.photo}" />
+      <div>
+        <h3>${n.nom}</h3>
         <p>${n.ville} – ${n.infos}</p>
         <button class="btn" onclick="contacter('${n.nom}')">Contacter</button>
       </div>
-      <i class="fas fa-heart ${favClass}" onclick="toggleFavori(this, ${index})"></i>
     `;
-    return card;
-  }
-
-  function toggleFavori(el, index) {
-    if (favoris.includes(index)) {
-      favoris = favoris.filter(i => i !== index);
-      el.classList.remove("favori");
-    } else {
-      favoris.push(index);
-      el.classList.add("favori");
-    }
-  }
-
-  function afficherFavoris() {
-    const container = document.getElementById("favorisList");
-    container.innerHTML = "";
-    if (favoris.length === 0) {
-      container.innerHTML = "<p>Aucun favori pour le moment.</p>";
-    } else {
-      favoris.forEach(i => container.appendChild(createCard(nounous[i], i)));
-    }
-  }
-
-  function contacter(nom) {
-    currentContact = nom;
-    messages = [];
-    switchTab("messagerie", document.querySelector(".nav-item:nth-child(3)"));
-  }
-
-  function envoyerMessage() {
-    const input = document.getElementById("messageInput");
-    const text = input.value.trim();
-    if (text) {
-      messages.push({ text: text, status: "✓ distribué" });
-      input.value = "";
-      afficherMessages();
-      setTimeout(() => {
-        messages = messages.map(m => ({ ...m, status: "lu" }));
-        afficherMessages();
-      }, 3000);
-    }
-  }
-
-  function handleKey(event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      envoyerMessage();
-    }
-  }
-
-  function afficherMessages() {
-    const box = document.getElementById("chatBox");
-    box.innerHTML = messages.map(m => `<div class='chat-message'>${m.text}<div class='status'>${m.status}</div></div>`).join("");
-  }
-
-  document.getElementById("searchInput").addEventListener("input", function() {
-    const val = this.value.toLowerCase();
-    const filtered = nounous.filter(n => n.nom.toLowerCase().includes(val) || n.ville.toLowerCase().includes(val));
-    const container = document.getElementById("results");
-    container.innerHTML = "";
-    filtered.forEach((n, i) => container.appendChild(createCard(n, i)));
+    res.appendChild(card);
   });
+}
 
-  afficherTous();
+function contacter(nom) {
+  currentContact = nom;
+  messages = [];
+  document.getElementById("chatWith").innerText = "Conversation avec " + nom;
+  switchTab("messagerie", document.querySelectorAll(".nav-item")[2]);
+}
+
+function envoyerMessage() {
+  const input = document.getElementById("messageInput");
+  if (input.value.trim()) {
+    messages.push({ text: input.value, status: "✓ distribué" });
+    input.value = "";
+    afficherMessages();
+    setTimeout(() => {
+      messages = messages.map(m => ({ ...m, status: "lu" }));
+      afficherMessages();
+    }, 3000);
+  }
+}
+
+function handleKey(e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    envoyerMessage();
+  }
+}
+
+function afficherMessages() {
+  const box = document.getElementById("chatBox");
+  box.innerHTML = messages.map(m => `<div class="chat-message">${m.text}<div class="status">${m.status}</div></div>`).join("");
+}
+
+function enregistrerProfil() {
+  const prenom = document.getElementById("prenom").value;
+  const nom = document.getElementById("nom").value;
+  const email = document.getElementById("email").value;
+  const avatarFile = document.getElementById("avatar").files[0];
+
+  if (avatarFile) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById("previewImage").src = e.target.result;
+    };
+    reader.readAsDataURL(avatarFile);
+  }
+
+  document.getElementById("previewText").innerText = `${prenom} ${nom} (${email})`;
+  document.getElementById("previewContainer").style.display = "block";
+}
+
+document.getElementById("searchInput").addEventListener("input", function() {
+  const val = this.value.toLowerCase();
+  const filtered = nounous.filter(n => n.nom.toLowerCase().includes(val) || n.ville.toLowerCase().includes(val));
+  const res = document.getElementById("results");
+  res.innerHTML = "";
+  filtered.forEach((n, i) => {
+    const card = document.createElement("div");
+    card.className = "profile-card";
+    card.innerHTML = `
+      <img src="images/${n.photo}" />
+      <div>
+        <h3>${n.nom}</h3>
+        <p>${n.ville} – ${n.infos}</p>
+        <button class="btn" onclick="contacter('${n.nom}')">Contacter</button>
+      </div>
+    `;
+    res.appendChild(card);
+  });
+});
+
+afficherTous();
 </script>
-
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
